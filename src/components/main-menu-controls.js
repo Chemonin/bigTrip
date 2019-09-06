@@ -1,6 +1,5 @@
-export const createMainMenuControls = () => {
+export const createMainMenuControls = (list) => {
   return `<nav class="trip-controls__trip-tabs  trip-tabs">
-    <a class="trip-tabs__btn  trip-tabs__btn--active" href="#">Table</a>
-    <a class="trip-tabs__btn" href="#">Stats</a>
+  ${list.map((element) => `<a class="trip-tabs__btn  ${element === `Table` ? `trip-tabs__btn--active` : ``}" href="#">${element}</a>`).join(``)}
   </nav>`;
 };
