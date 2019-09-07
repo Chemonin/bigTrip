@@ -1,10 +1,20 @@
+import {pointTypes} from '../data.js';
+const formatTime = function (timestamp) {
+  const formatDuration = (time) => ({
+    'D': Math.floor(time / 86400000),
+    'H': time.getUTCHours(),
+    'M': time.getUTCMinutes()
+  });
+  const duration = formatDuration(new Date(timestamp));
+  return `${Object.keys(duration).map((key) => duration[key] > 0 ? `${duration[key]}${key}` : ``).join(` `)}`;
+};
 export const createEvent = ({type, destination, eventTime, timeDuration, cost, options}) => {
   return `<li class="trip-events__item">
     <div class="event">
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">${type} ${[`bus`, `taxi`, `drive`, `flight`, `ship`, `train`].some((element) => element === type) ? `to` : `in`} ${destination}</h3>
+      <h3 class="event__title">${type} ${pointTypes[type]} ${destination}</h3>
 
       <div class="event__schedule">
         <p class="event__time">
@@ -12,7 +22,7 @@ export const createEvent = ({type, destination, eventTime, timeDuration, cost, o
           &mdash;
           <time class="event__end-time" datetime="2019-03-18T11:00">${new Date(eventTime + timeDuration).toTimeString().substr(0, 5)}</time>
         </p>
-        <p class="event__duration">${new Date(timeDuration).getUTCHours()}H ${new Date(timeDuration).getUTCMinutes()}M</p>
+        <p class="event__duration">${formatTime(timeDuration)}</p>
       </div>
 
       <p class="event__price">
