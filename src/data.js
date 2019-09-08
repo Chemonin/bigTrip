@@ -2,7 +2,7 @@ const TIME_INTERVAL = 259200000;
 const MAX_DURATION = 120000000;
 const MAX_COST = 1000;
 const NUMBER_OF_POINT = 4;
-const PointType = {
+export const PointType = {
   TAXI: `taxi`,
   BUS: `bus`,
   TRAIN: `train`,
@@ -42,13 +42,13 @@ export const dataByType = {
     group: GroupType.TRANSFER
   },
   [PointType.CHECK_IN]: {
-    group: GroupType.TRANSFER
+    group: GroupType.ACTIVITY
   },
   [PointType.SIGHTSEEING]: {
-    group: GroupType.TRANSFER
+    group: GroupType.ACTIVITY
   },
   [PointType.RESTAURANT]: {
-    group: GroupType.TRANSFER
+    group: GroupType.ACTIVITY
   },
 };
 export const month = {
@@ -68,17 +68,7 @@ export const month = {
 const getPointsData = (count) => new Array(count).fill(``).map(getPoint);
 const getRandomElement = (element) => element[Math.floor(Math.random() * element.length)];
 const randomInteger = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
-export const pointTypes = {
-  'taxi': `to`,
-  'bus': `to`,
-  'train': `to`,
-  'ship': `to`,
-  'drive': `to`,
-  'flight': `to`,
-  'check-in': `in`,
-  'sightseeing': `in`,
-  'restaurant': `in`
-};
+
 export const cities = [`Moscow`, `London`, `Paris`, `New-York`, `Tokio`];
 const descriptionPhrases = [`Lorem ipsum dolor sit amet, consectetur adipiscing elit.`, `Cras aliquet varius magna, non porta ligula feugiat eget.`, `Fusce tristique felis at fermentum pharetra.`, `Aliquam id orci ut lectus varius viverra.`, `Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.`, `Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.`, `Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.`, `Sed sed nisi sed augue convallis suscipit in sed felis.`, `Aliquam erat volutpat.`, `Nunc fermentum tortor ac porta dapibus.`, `In rutrum ac purus sit amet tempus`];
 export const optionItems = {
