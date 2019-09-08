@@ -2,6 +2,55 @@ const TIME_INTERVAL = 259200000;
 const MAX_DURATION = 120000000;
 const MAX_COST = 1000;
 const NUMBER_OF_POINT = 4;
+const PointType = {
+  TAXI: `taxi`,
+  BUS: `bus`,
+  TRAIN: `train`,
+  SHIP: `ship`,
+  DRIVE: `drive`,
+  FLIGHT: `flight`,
+  CHECK_IN: `check-in`,
+  SIGHTSEEING: `sightseeing`,
+  RESTAURANT: `restaurant`
+};
+export const GroupType = {
+  TRANSFER: `Transfer`,
+  ACTIVITY: `Activity`
+};
+export const suffixByGroup = {
+  [GroupType.TRANSFER]: `to`,
+  [GroupType.ACTIVITY]: `in`
+};
+
+export const dataByType = {
+  [PointType.TAXI]: {
+    group: GroupType.TRANSFER
+  },
+  [PointType.BUS]: {
+    group: GroupType.TRANSFER
+  },
+  [PointType.TRAIN]: {
+    group: GroupType.TRANSFER
+  },
+  [PointType.SHIP]: {
+    group: GroupType.TRANSFER
+  },
+  [PointType.DRIVE]: {
+    group: GroupType.TRANSFER
+  },
+  [PointType.FLIGHT]: {
+    group: GroupType.TRANSFER
+  },
+  [PointType.CHECK_IN]: {
+    group: GroupType.TRANSFER
+  },
+  [PointType.SIGHTSEEING]: {
+    group: GroupType.TRANSFER
+  },
+  [PointType.RESTAURANT]: {
+    group: GroupType.TRANSFER
+  },
+};
 export const month = {
   0: `January`,
   1: `February`,
@@ -39,7 +88,7 @@ export const optionItems = {
   'Choose seats': `seats`
 };
 export const getPoint = () => ({
-  type: getRandomElement(Object.keys(pointTypes)),
+  type: getRandomElement(Object.keys(dataByType)),
   destination: getRandomElement(cities),
   photos: new Array(5).fill(``).map((element) => {
     element = `http://picsum.photos/300/150?r=${Math.random()}`;

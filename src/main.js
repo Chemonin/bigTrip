@@ -33,5 +33,5 @@ renderElement(tripDay, `beforeend`, createEventsList());
 const eventsList = tripContainer.querySelector(`.trip-events__list`);
 const createPointsList = (list, startIndex) => list.slice(startIndex).map(createEvent).join(``);
 
-renderElement(eventsList, `afterbegin`, createEventEdit(pointsData[count++]));
+renderElement(eventsList, `afterbegin`, `<li class="trip-events__item">${createEventEdit(pointsData[count++])}</li>`);
 renderElement(eventsList, `beforeend`, createPointsList(pointsData, count));
