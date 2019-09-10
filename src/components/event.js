@@ -1,46 +1,64 @@
 import {dataByType, suffixByGroup} from '../data.js';
-const formatTime = function (timestamp) {
-  const formatDuration = (time) => ({
-    'D': Math.floor(time / 86400000),
-    'H': time.getUTCHours(),
-    'M': time.getUTCMinutes()
-  });
-  const duration = formatDuration(new Date(timestamp));
-  return `${Object.keys(duration).map((key) => duration[key] > 0 ? `${duration[key]}${key}` : ``).join(` `)}`;
-};
-export const createEvent = ({type, destination, eventTime, timeDuration, cost, options}) => {
-  return `<li class="trip-events__item">
-    <div class="event">
-      <div class="event__type">
-        <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
-      </div>
-      <h3 class="event__title">${type} ${suffixByGroup[dataByType[type].group]} ${destination}</h3>
+import {createElement, formatTime} from '../utils.js';
+export default class Event {
+  constructor({type, destination, eventTime, timeDuration, cost, options}) {
+    this._destination = destination;
+    this._eventTime = eventTime;
+    this._timeDuration = timeDuration;
+    this._type = type;
+    this._cost = cost;
+    this._options = options;
+    this._element = null;
+  }
 
-      <div class="event__schedule">
-        <p class="event__time">
-          <time class="event__start-time" datetime="2019-03-18T10:30">${new Date(eventTime).toTimeString().substr(0, 5)}</time>
-          &mdash;
-          <time class="event__end-time" datetime="2019-03-18T11:00">${new Date(eventTime + timeDuration).toTimeString().substr(0, 5)}</time>
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    if (this._element) {
+      this._element = null;
+    }
+    return this._element;
+  }
+
+  getTemplate() {
+    return `<li class="trip-events__item">
+      <div class="event">
+        <div class="event__type">
+          <img class="event__type-icon" width="42" height="42" src="img/icons/${this._type}.png" alt="Event type icon">
+        </div>
+        <h3 class="event__title">${this._type} ${suffixByGroup[dataByType[this._type].group]} ${this._destination}</h3>
+
+        <div class="event__schedule">
+          <p class="event__time">
+            <time class="event__start-time" datetime="2019-03-18T10:30">${new Date(this._eventTime).toTimeString().substr(0, 5)}</time>
+            &mdash;
+            <time class="event__end-time" datetime="2019-03-18T11:00">${new Date(this._eventTime + this._timeDuration).toTimeString().substr(0, 5)}</time>
+          </p>
+          <p class="event__duration">${formatTime(this._timeDuration)}</p>
+        </div>
+
+        <p class="event__price">
+          &euro;&nbsp;<span class="event__price-value">${this._cost}</span>
         </p>
-        <p class="event__duration">${formatTime(timeDuration)}</p>
+
+        <h4 class="visually-hidden">Offers:</h4>
+        ${this._options.length !== 0 ? `<ul class="event__selected-offers">
+          ${this._options.map((item) => `<li class="event__offer">
+            <span class="event__offer-title">${item.name}</span>
+            &plus;
+            &euro;&nbsp;<span class="event__offer-price">${item.price}</span>
+           </li>`).join(``)}
+        </ul>` : ``}
+
+        <button class="event__rollup-btn" type="button">
+          <span class="visually-hidden">Open event</span>
+        </button>
       </div>
-
-      <p class="event__price">
-        &euro;&nbsp;<span class="event__price-value">${cost}</span>
-      </p>
-
-      <h4 class="visually-hidden">Offers:</h4>
-      ${options.length !== 0 ? `<ul class="event__selected-offers">
-        ${options.map((item) => `<li class="event__offer">
-          <span class="event__offer-title">${item.name}</span>
-          &plus;
-          &euro;&nbsp;<span class="event__offer-price">${item.price}</span>
-         </li>`).join(``)}
-      </ul>` : ``}
-
-      <button class="event__rollup-btn" type="button">
-        <span class="visually-hidden">Open event</span>
-      </button>
-    </div>
-  </li>`;
-};
+    </li>`;
+  }
+}
