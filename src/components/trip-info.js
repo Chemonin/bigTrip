@@ -1,13 +1,17 @@
 import {month} from '../data.js';
-
-export const createTripInfo = (pointsData) => {
-  let initialValue = 0;
-  const total = pointsData.reduce(function (previous, current) {
-    let optionPrice = current.options.reduce(function (actual, next) {
-      return actual + next.price;
-    }, initialValue);
+const countTotalPrice = function (elementList) {
+  const initialValue = 0;
+  return elementList.reduce(function (previous, current) {
+    let optionPrice = 0;
+    if (current.options.length !== 0) {
+      current.options.forEach(function (element) {
+        optionPrice = optionPrice + element.price;
+      });
+    }
     return previous + current.cost + optionPrice;
   }, initialValue);
+};
+export const createTripInfo = (pointsData) => {
   return `<section class="trip-main__trip-info  trip-info">
     <div class="trip-info__main">
       <h1 class="trip-info__title">${pointsData.length <= 3 ?
@@ -20,7 +24,7 @@ export const createTripInfo = (pointsData) => {
     </div>
 
     <p class="trip-info__cost">
-      Total: &euro;&nbsp;<span class="trip-info__cost-value">${total}</span>
+      Total: &euro;&nbsp;<span class="trip-info__cost-value">${countTotalPrice(pointsData)}</span>
     </p>
   </section>`;
 };
