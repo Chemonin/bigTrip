@@ -1,33 +1,19 @@
 import {dataByType, suffixByGroup} from '../data.js';
-import {createElement, formatTime} from '../utils.js';
-export default class Event {
+import {formatTime} from '../utils.js';
+import AbstractComponent from './abstract-component.js';
+export default class Event extends AbstractComponent {
   constructor({type, destination, eventTime, timeDuration, cost, options}) {
+    super();
     this._destination = destination;
     this._eventTime = eventTime;
     this._timeDuration = timeDuration;
     this._type = type;
     this._cost = cost;
     this._options = options;
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    if (this._element) {
-      this._element = null;
-    }
-    return this._element;
   }
 
   getTemplate() {
-    return `<li class="trip-events__item">
-      <div class="event">
+    return `<div class="event">
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${this._type}.png" alt="Event type icon">
         </div>
@@ -58,7 +44,6 @@ export default class Event {
         <button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
         </button>
-      </div>
-    </li>`;
+      </div>`;
   }
 }
