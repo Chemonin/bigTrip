@@ -3,7 +3,7 @@ import Event from '../components/event.js';
 import DayEventsItem from '../components/day-events-item.js';
 import {Position, render, unrender} from '../utils.js';
 
-export default class TripController {
+export default class EventController {
   constructor(container, data) {
     this._container = container;
     this._event = new Event(data);
