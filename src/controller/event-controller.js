@@ -34,11 +34,6 @@ export default class EventController {
         const formData = new FormData(this._eventEdit.getElement());
         this._changes.eventTime = new Date(formData.get(`event-start-time`)).getTime();
         this._changes.eventEndTIme = formData.get(`event-end-time`);
-        // const changes = {
-        //   eventTime: formData.get(`event-start-time`),
-        //   eventEndTIme: formData.get(`event-end-time`),
-        //   type: this._eventEdit.getElement().querySelector(`.event__type-icon`).dataset.eventType,
-        // }
         console.dir(this._changes);
       });
       this._eventEdit.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, () => {
