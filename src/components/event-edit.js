@@ -1,5 +1,6 @@
 import {cities, optionItems, suffixByGroup, GroupType, PointType, dataByType} from '../data.js';
 import AbstractComponent from './abstract-component.js';
+import moment from 'moment';
 
 export default class EventEdit extends AbstractComponent {
   constructor({photos, type, destination, eventTime, timeDuration, cost, options, description}) {
@@ -54,7 +55,7 @@ export default class EventEdit extends AbstractComponent {
           <label class="visually-hidden" for="event-start-time-1">
             From
           </label>
-          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${this.formatData(this._eventTime)}">
+          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${moment(this._eventTime).format(`DD.MM.YYYY HH:MM`)}">
           &mdash;
           <label class="visually-hidden" for="event-end-time-1">
             To
