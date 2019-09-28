@@ -16,6 +16,7 @@ export default class TripController {
     this._dayEvents = new DayEvents();
     this._dayEventsItem = new DayEventsItem();
     this._day = new Day(CLEAR_DATE, CLEAR_DATE);
+    this._onDataChange = this._onDataChange.bind(this);
   }
 
   _renderDay(pointsData) {
@@ -28,8 +29,13 @@ export default class TripController {
       const dayEvents = new DayEvents();
       render(this._daysList.getElement(), day.getElement(), Position.BEFOREEND);
       render(day.getElement(), dayEvents.getElement(), Position.BEFOREEND);
-      dayPoints.forEach((point) => new EventController(dayEvents.getElement(), point));
+      dayPoints.forEach((point) => new EventController(dayEvents.getElement(), point, this._onDataChange));
     });
+  }
+
+  _onDataChange(newData, oldData) {
+    this._points[this._points.findIndex((it) => it === oldData)] = newData;
+    this._renderDay(this._points);
   }
 
   _onSortingLabelClick(evt) {
@@ -44,14 +50,14 @@ export default class TripController {
         const sortedByTime = this._points.slice().sort((a, b) => b.eventTime - a.eventTime);
         render(this._daysList.getElement(), this._day.getElement(), Position.BEFOREEND);
         render(this._day.getElement(), this._dayEvents.getElement(), Position.BEFOREEND);
-        sortedByTime.forEach((sortingItem) => new EventController(this._dayEvents.getElement(), sortingItem));
+        sortedByTime.forEach((sortingItem) => new EventController(this._dayEvents.getElement(), sortingItem, this._onDataChange));
         break;
       case `price`:
         this._dayEvents.getElement().innerHTML = ``;
         const sortedByPrice = this._points.slice().sort((a, b) => b.cost - a.cost);
         render(this._daysList.getElement(), this._day.getElement(), Position.BEFOREEND);
         render(this._day.getElement(), this._dayEvents.getElement(), Position.BEFOREEND);
-        sortedByPrice.forEach((sortingItem) => new EventController(this._dayEvents.getElement(), sortingItem));
+        sortedByPrice.forEach((sortingItem) => new EventController(this._dayEvents.getElement(), sortingItem, this._onDataChange));
         break;
       case `default`:
         this._sorting.getElement().querySelector(`.trip-sort__item--day`).textContent = `day`;
