@@ -5,7 +5,7 @@ import {Position, render, unrender} from '../utils.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/light.css';
-// import moment from 'moment';
+import moment from 'moment';
 // import {pointsData} from '../data.js';
 
 export default class EventController {
@@ -57,11 +57,37 @@ export default class EventController {
       });
       this._eventEdit.getElement().addEventListener(`submit`, (evt) => {
         evt.preventDefault();
+        const formData = new FormData(this._eventEdit.getElement());
+        for (let i of formData.keys()) {
+          console.log(i);
+        }
+        this._changes.type = this._eventEdit.getElement().querySelector(`.event__type-icon`).dataset.eventType;
+        this._changes.eventTime = +moment(formData.get(`event-start-time`), `YYYY-MM-DD HH:mm`);
+        this._changes.timeDuration = moment(formData.get(`event-end-time`), `YYYY-MM-DD HH:mm`).unix() - moment(formData.get(`event-start-time`), `YYYY-MM-DD HH:mm`).unix();
+        this._changes.eventFavorite = (formData.get(`event-favorite`)) ? true : false;
+        this._changes.cost = formData.get(`event-price`);
+        this._changes.destination = formData.get(`event-destination`);
+        this._changes.description = this._eventEdit.getElement().querySelector(`.event__destination-description`).textContent;
+        const offers = Array.from(this._eventEdit.getElement().querySelectorAll(`.event__offer-label`));
+        if (offers.length !== 0) {
+          this._changes.options = offers.reduce((acc, elem) => {
+            const option = {
+              name: elem.querySelector(`.event__offer-title`).textContent,
+              price: elem.querySelector(`.event__offer-price`).textContent,
+              enable: formData.get(elem.getAttribute(`name`)) ? true : false,
+            };
+            return [...acc, option];
+          }, []);
+        } else {
+          this._changes.options = [];
+        }
+        this._changes.photos = Array.from(this._eventEdit.getElement().querySelectorAll(`.event__photo`))
+          .map((item) => item.getAttribute(`src`));
         this._dayEventsItem.getElement().replaceChild(this._event.getElement(), this._eventEdit.getElement());
         this._eventEdit.removeElement();
-        const formData = new FormData(this._eventEdit.getElement());
-        this._changes.eventTime = new Date(formData.get(`event-start-time`)).getTime();
-        this._changes.eventEndTIme = formData.get(`event-end-time`);
+
+        console.log(this._changes);
+        this._onDataChange(this._changes, this._data);
       });
       this._eventEdit.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, () => {
         unrender(this._eventEdit.getElement());

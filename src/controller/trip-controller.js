@@ -34,6 +34,7 @@ export default class TripController {
   }
 
   _onDataChange(newData, oldData) {
+    debugger;
     this._points[this._points.findIndex((it) => it === oldData)] = newData;
     this._renderDay(this._points);
   }

@@ -27,7 +27,7 @@ export default class EventEdit extends AbstractComponent {
         <div class="event__type-wrapper">
           <label class="event__type  event__type-btn" for="event-type-toggle-1">
             <span class="visually-hidden">Choose event type</span>
-            <img class="event__type-icon" width="17" height="17" src="img/icons/${this._type}.png" alt="Event type icon">
+            <img class="event__type-icon" data-event-type="${this._type}" width="17" height="17" src="img/icons/${this._type}.png" alt="Event type icon">
           </label>
           <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -87,7 +87,7 @@ export default class EventEdit extends AbstractComponent {
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
           <div class="event__available-offers">
             ${this._options.map((element) => `<div class="event__offer-selector">
-              <input class="event__offer-checkbox  visually-hidden" id="event-offer-${optionItems[element.name]}" type="checkbox" name="event-offer-luggage" ${element.enable ? `checked` : ``}>
+              <input class="event__offer-checkbox  visually-hidden" id="event-offer-${optionItems[element.name]}" type="checkbox" name="event-offer-${optionItems[element.name]}" ${element.enable ? `checked` : ``}>
               <label class="event__offer-label" for="event-offer-${optionItems[element.name]}">
                 <span class="event__offer-title">${element.name}</span>
                 &plus;

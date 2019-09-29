@@ -89,7 +89,7 @@ export const getPoint = () => ({
   timeDuration: Math.floor(Math.random() * MAX_DURATION),
   cost: Math.floor(Math.random() * MAX_COST),
   options: new Array(Math.floor(Math.random() * 3)).fill(``).map((element) => {
-    element = {name: getRandomElement(Object.keys(optionItems)), price: Math.floor(Math.random() * 200), enable: true};
+    element = {name: getRandomElement(Object.keys(optionItems)), price: Math.floor(Math.random() * 200), enable: Boolean(Math.round(Math.random()))};
     return element;
   })
 });
