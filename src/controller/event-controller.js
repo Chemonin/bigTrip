@@ -10,9 +10,9 @@ import moment from 'moment';
 
 export default class EventController {
   constructor(container, data, onDataChange) {
-    // this._data = data; // для удаления данных точки из массива
     this._container = container;
     this._data = data;
+    console.log(this._data.eventTime);
     this._event = new Event(data);
     this._eventEdit = new EventEdit(data);
     this._dayEventsItem = new DayEventsItem();
@@ -22,31 +22,31 @@ export default class EventController {
   }
 
   create() {
-    const dateStart = flatpickr(this._eventEdit.getElement().querySelector(`#event-start-time-1`), {
-      onChange: (selectedDate) => {
-        dateEnd.set(`minDate`, selectedDate[0]);
-        dateEnd.set(`minTime`, selectedDate[0]);
-      },
-      altInput: true,
-      altFormat: `d.n.Y G:i`,
-      allowInput: true,
-      enableTime: true,
-      time_24hr: true, // eslint-disable-line
-      defaultDate: this._data.eventTime
-    });
-    const dateEnd = flatpickr(this._eventEdit.getElement().querySelector(`#event-end-time-1`), {
-      onChange: (selectedDate) => {
-        dateStart.set(`maxDate`, selectedDate[0]);
-        dateStart.set(`maxTime`, selectedDate[0]);
-      },
-      altInput: true,
-      altFormat: `d.n.Y G:i`,
-      allowInput: true,
-      enableTime: true,
-      time_24hr: true, // eslint-disable-line
-      defaultDate: this._data.eventTime + this._data.timeDuration
-    });
     this._event.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+      const dateStart = flatpickr(this._eventEdit.getElement().querySelector(`#event-start-time-1`), {
+        onChange: (selectedDate) => {
+          dateEnd.set(`minDate`, selectedDate[0]);
+          dateEnd.set(`minTime`, selectedDate[0]);
+        },
+        altInput: true,
+        altFormat: `d.n.Y H:i`,
+        allowInput: true,
+        enableTime: true,
+        time_24hr: true, // eslint-disable-line
+        defaultDate: this._data.eventTime
+      });
+      const dateEnd = flatpickr(this._eventEdit.getElement().querySelector(`#event-end-time-1`), {
+        onChange: (selectedDate) => {
+          dateStart.set(`maxDate`, selectedDate[0]);
+          dateStart.set(`maxTime`, selectedDate[0]);
+        },
+        altInput: true,
+        altFormat: `d.n.Y H:i`,
+        allowInput: true,
+        enableTime: true,
+        time_24hr: true, // eslint-disable-line
+        defaultDate: this._data.eventTime + this._data.timeDuration
+      });
       this._dayEventsItem.getElement().replaceChild(this._eventEdit.getElement(), this._event.getElement());
       this._eventEdit.getElement().querySelector(`.event__type-list`).addEventListener(`click`, (evt) => {
         if (evt.target.nodeName.toLowerCase() === `input`) {
@@ -61,9 +61,10 @@ export default class EventController {
         for (let i of formData.keys()) {
           console.log(i);
         }
+        // debugger;
         this._changes.type = this._eventEdit.getElement().querySelector(`.event__type-icon`).dataset.eventType;
         this._changes.eventTime = +moment(formData.get(`event-start-time`), `YYYY-MM-DD HH:mm`);
-        this._changes.timeDuration = moment(formData.get(`event-end-time`), `YYYY-MM-DD HH:mm`).unix() - moment(formData.get(`event-start-time`), `YYYY-MM-DD HH:mm`).unix();
+        this._changes.timeDuration = moment(formData.get(`event-end-time`), `YYYY-MM-DD HH:mm`).valueOf() - moment(formData.get(`event-start-time`), `YYYY-MM-DD HH:mm`).valueOf();
         this._changes.eventFavorite = (formData.get(`event-favorite`)) ? true : false;
         this._changes.cost = formData.get(`event-price`);
         this._changes.destination = formData.get(`event-destination`);
@@ -85,7 +86,6 @@ export default class EventController {
           .map((item) => item.getAttribute(`src`));
         this._dayEventsItem.getElement().replaceChild(this._event.getElement(), this._eventEdit.getElement());
         this._eventEdit.removeElement();
-
         console.log(this._changes);
         this._onDataChange(this._changes, this._data);
       });

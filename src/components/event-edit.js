@@ -8,6 +8,7 @@ export default class EventEdit extends AbstractComponent {
     this._photos = photos;
     this._destination = destination;
     this._eventTime = eventTime;
+    console.log(this._eventTime);
     this._timeDuration = timeDuration;
     this._type = type;
     this._cost = cost;
@@ -60,7 +61,7 @@ export default class EventEdit extends AbstractComponent {
           <label class="visually-hidden" for="event-end-time-1">
             To
           </label>
-          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${this.formatData(this._eventTime + this._timeDuration)}">
+          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${moment(this._eventTime + this._timeDuration).format(`DD.MM.YYYY HH:MM`)}">
         </div>
         <div class="event__field-group  event__field-group--price">
           <label class="event__label" for="event-price-1">

@@ -7,6 +7,7 @@ export default class Event extends AbstractComponent {
     super();
     this._destination = destination;
     this._eventTime = eventTime;
+    console.log(this._eventTime);
     this._timeDuration = timeDuration;
     this._type = type;
     this._cost = cost;
@@ -22,9 +23,9 @@ export default class Event extends AbstractComponent {
 
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="2019-03-18T10:30">${moment(this._eventTime).format(`HH:MM`)}</time>
+            <time class="event__start-time" datetime="2019-03-18T10:30">${moment(this._eventTime).format(`DD.MM.YYYY HH:MM`)}</time>
             &mdash;
-            <time class="event__end-time" datetime="2019-03-18T11:00">${moment(this._eventTime + this._timeDuration).format(`HH:MM`)}</time>
+            <time class="event__end-time" datetime="2019-03-18T11:00">${moment(this._eventTime + this._timeDuration).format(`DD.MM.YYYY HH:MM`)}</time>
           </p>
           <p class="event__duration">${formatTime(this._timeDuration)}</p>
         </div>

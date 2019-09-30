@@ -2,7 +2,7 @@ import DaysList from '../components/days-list.js';
 import DayEvents from '../components/day-events.js';
 import DayEventsItem from '../components/day-events-item.js';
 import Day from '../components/day.js';
-import {Position, render} from '../utils.js';
+import {Position, render, unrender} from '../utils.js';
 import Sorting from '../components/sorting.js';
 import EventController from './event-controller.js';
 const CLEAR_DATE = ``;
@@ -21,7 +21,12 @@ export default class TripController {
 
   _renderDay(pointsData) {
     let dayCount = 0;
-    const dates = new Set(pointsData.map((point) => new Date(point.eventTime).toString().substr(4, 6)));
+    unrender(this._daysList.getElement());
+    this._daysList.removeElement();
+    render(this._container, this._daysList.getElement(), Position.BEFOREEND);
+    const dates = new Set(pointsData.sort((a, b) => {
+      return a.eventTime - b.eventTime;
+    }).map((point) => new Date(point.eventTime).toString().substr(4, 6)));
     dates.forEach((date) => {
       const dayPoints = this._points.slice().filter((point) => new Date(point.eventTime).toString().substr(4, 6) === date);
       dayCount++;
@@ -34,7 +39,6 @@ export default class TripController {
   }
 
   _onDataChange(newData, oldData) {
-    debugger;
     this._points[this._points.findIndex((it) => it === oldData)] = newData;
     this._renderDay(this._points);
   }
@@ -69,7 +73,7 @@ export default class TripController {
 
   init() {
     render(this._container, this._sorting.getElement(), Position.BEFOREEND);
-    render(this._container, this._daysList.getElement(), Position.BEFOREEND);
+    // render(this._container, this._daysList.getElement(), Position.BEFOREEND);
     this._sorting.getElement().addEventListener(`click`, (evt) => this._onSortingLabelClick(evt));
     this._renderDay(this._points);
   }
