@@ -1,26 +1,41 @@
-import {month} from '../data.js';
-const countTotalPrice = function (elementList) {
+import moment from 'moment';
+
+export const countTotalPrice = function (elementList) {
   const initialValue = 0;
   return elementList.reduce(function (previous, current) {
     let optionPrice = 0;
     if (current.options.length !== 0) {
       current.options.forEach(function (element) {
-        optionPrice = optionPrice + element.price;
+        if (element.enable) {
+          optionPrice = optionPrice + parseInt(element.price, 10);
+        }
       });
     }
-    return previous + current.cost + optionPrice;
+    return previous + parseInt(current.cost, 10) + optionPrice;
   }, initialValue);
+};
+
+export const createRootName = function (data) {
+  const cities = new Set(data.reduce((acc, curr) => {
+    return [...acc, curr.destination];
+  }, []));
+  if (cities.size <= 3) {
+    return Array.from(cities).map((element) => element).join(`-`);
+  } else {
+    return `${Array.from(cities)[0]}-...-${Array.from(cities).pop()}`;
+  }
+};
+
+const createRootDate = function (data) {
+  return `${moment(data[0].eventTime)
+    .format(`MMM DD`)}&nbsp;&mdash;&nbsp;${moment(data[data.length - 1].eventTime).format(`MMM DD`)}`;
 };
 export const createTripInfo = (pointsData) => {
   return `<section class="trip-main__trip-info  trip-info">
     <div class="trip-info__main">
-      <h1 class="trip-info__title">${pointsData.length <= 3 ?
-    `${pointsData.map((element) => element.destination).join(`-`)}` :
-    `${pointsData[0].destination}-...-${pointsData[pointsData.length - 1].destination}`}</h1>
+      <h1 class="trip-info__title">${createRootName(pointsData)}</h1>
 
-      <p class="trip-info__dates">${month[new Date(pointsData[0].eventTime)
-        .getMonth()].substr(0, 3)} ${new Date(pointsData[0].eventTime)
-        .getDate()}&nbsp;&mdash;&nbsp;${new Date(pointsData[pointsData.length - 1].eventTime).getDate()}</p>
+      <p class="trip-info__dates">${createRootDate(pointsData)}</p>
     </div>
 
     <p class="trip-info__cost">

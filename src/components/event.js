@@ -1,11 +1,13 @@
 import {dataByType, suffixByGroup} from '../data.js';
 import {formatTime} from '../utils.js';
 import AbstractComponent from './abstract-component.js';
+import moment from 'moment';
 export default class Event extends AbstractComponent {
   constructor({type, destination, eventTime, timeDuration, cost, options}) {
     super();
     this._destination = destination;
-    this._eventTime = eventTime;
+    this._eventTime = moment(eventTime).format(`HH:mm`);
+    this._eventTimeEnd = moment(timeDuration + eventTime).format(`HH:mm`);
     this._timeDuration = timeDuration;
     this._type = type;
     this._cost = cost;
@@ -21,9 +23,9 @@ export default class Event extends AbstractComponent {
 
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="2019-03-18T10:30">${new Date(this._eventTime).toTimeString().substr(0, 5)}</time>
+            <time class="event__start-time" datetime="2019-03-18T10:30">${this._eventTime}</time>
             &mdash;
-            <time class="event__end-time" datetime="2019-03-18T11:00">${new Date(this._eventTime + this._timeDuration).toTimeString().substr(0, 5)}</time>
+            <time class="event__end-time" datetime="2019-03-18T11:00">${this._eventTimeEnd}</time>
           </p>
           <p class="event__duration">${formatTime(this._timeDuration)}</p>
         </div>

@@ -1,13 +1,14 @@
 import {cities, optionItems, suffixByGroup, GroupType, PointType, dataByType} from '../data.js';
 import AbstractComponent from './abstract-component.js';
+import moment from 'moment';
 
 export default class EventEdit extends AbstractComponent {
   constructor({photos, type, destination, eventTime, timeDuration, cost, options, description}) {
     super();
     this._photos = photos;
     this._destination = destination;
-    this._eventTime = eventTime;
-    this._timeDuration = timeDuration;
+    this._eventTime = moment(eventTime).format(`DD.MM.YYYY HH:mm`);
+    this._eventTimeEnd = moment(timeDuration + eventTime).format(`DD.MM.YYYY HH:mm`);
     this._type = type;
     this._cost = cost;
     this._options = options;
@@ -26,7 +27,7 @@ export default class EventEdit extends AbstractComponent {
         <div class="event__type-wrapper">
           <label class="event__type  event__type-btn" for="event-type-toggle-1">
             <span class="visually-hidden">Choose event type</span>
-            <img class="event__type-icon" width="17" height="17" src="img/icons/${this._type}.png" alt="Event type icon">
+            <img class="event__type-icon" data-event-type="${this._type}" width="17" height="17" src="img/icons/${this._type}.png" alt="Event type icon">
           </label>
           <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -35,7 +36,7 @@ export default class EventEdit extends AbstractComponent {
               <legend class="visually-hidden">${key}</legend>
               ${Object.values(PointType).filter((element) => dataByType[element].group === GroupType[key])
                 .map((element) => `<div class="event__type-item">
-                <input id="event-type-${PointType[element]}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${element}">
+                <input id="event-type-${element}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${element}">
                 <label class="event__type-label  event__type-label--${element}" for="event-type-${element}-1">${element}</label>
               </div>`).join(``)}
             </fieldset>`).join(``)}
@@ -54,12 +55,12 @@ export default class EventEdit extends AbstractComponent {
           <label class="visually-hidden" for="event-start-time-1">
             From
           </label>
-          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${this.formatData(this._eventTime)}">
+          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${this._eventTime}">
           &mdash;
           <label class="visually-hidden" for="event-end-time-1">
             To
           </label>
-          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${this.formatData(this._eventTime + this._timeDuration)}">
+          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${this._eventTimeEnd}">
         </div>
         <div class="event__field-group  event__field-group--price">
           <label class="event__label" for="event-price-1">
@@ -86,7 +87,7 @@ export default class EventEdit extends AbstractComponent {
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
           <div class="event__available-offers">
             ${this._options.map((element) => `<div class="event__offer-selector">
-              <input class="event__offer-checkbox  visually-hidden" id="event-offer-${optionItems[element.name]}" type="checkbox" name="event-offer-luggage" ${element.enable ? `checked` : ``}>
+              <input class="event__offer-checkbox  visually-hidden" id="event-offer-${optionItems[element.name]}" type="checkbox" name="event-offer-${optionItems[element.name]}" ${element.enable ? `checked` : ``}>
               <label class="event__offer-label" for="event-offer-${optionItems[element.name]}">
                 <span class="event__offer-title">${element.name}</span>
                 &plus;
