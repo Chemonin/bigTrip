@@ -7,9 +7,8 @@ export default class EventEdit extends AbstractComponent {
     super();
     this._photos = photos;
     this._destination = destination;
-    this._eventTime = eventTime;
-    console.log(this._eventTime);
-    this._timeDuration = timeDuration;
+    this._eventTime = moment(eventTime).format(`DD.MM.YYYY HH:mm`);
+    this._eventTimeEnd = moment(timeDuration + eventTime).format(`DD.MM.YYYY HH:mm`);
     this._type = type;
     this._cost = cost;
     this._options = options;
@@ -56,12 +55,12 @@ export default class EventEdit extends AbstractComponent {
           <label class="visually-hidden" for="event-start-time-1">
             From
           </label>
-          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${moment(this._eventTime).format(`DD.MM.YYYY HH:MM`)}">
+          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${this._eventTime}">
           &mdash;
           <label class="visually-hidden" for="event-end-time-1">
             To
           </label>
-          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${moment(this._eventTime + this._timeDuration).format(`DD.MM.YYYY HH:MM`)}">
+          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${this._eventTimeEnd}">
         </div>
         <div class="event__field-group  event__field-group--price">
           <label class="event__label" for="event-price-1">

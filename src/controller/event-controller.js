@@ -6,13 +6,12 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/light.css';
 import moment from 'moment';
-// import {pointsData} from '../data.js';
 
 export default class EventController {
   constructor(container, data, onDataChange) {
     this._container = container;
     this._data = data;
-    console.log(this._data.eventTime);
+    console.log(this._data);
     this._event = new Event(data);
     this._eventEdit = new EventEdit(data);
     this._dayEventsItem = new DayEventsItem();
@@ -61,7 +60,6 @@ export default class EventController {
         for (let i of formData.keys()) {
           console.log(i);
         }
-        // debugger;
         this._changes.type = this._eventEdit.getElement().querySelector(`.event__type-icon`).dataset.eventType;
         this._changes.eventTime = +moment(formData.get(`event-start-time`), `YYYY-MM-DD HH:mm`);
         this._changes.timeDuration = moment(formData.get(`event-end-time`), `YYYY-MM-DD HH:mm`).valueOf() - moment(formData.get(`event-start-time`), `YYYY-MM-DD HH:mm`).valueOf();
@@ -75,7 +73,7 @@ export default class EventController {
             const option = {
               name: elem.querySelector(`.event__offer-title`).textContent,
               price: elem.querySelector(`.event__offer-price`).textContent,
-              enable: formData.get(elem.getAttribute(`name`)) ? true : false,
+              enable: formData.get(elem.getAttribute(`for`)) === `on` ? true : false,
             };
             return [...acc, option];
           }, []);
