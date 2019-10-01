@@ -58,9 +58,6 @@ export default class EventController {
       this._eventEdit.getElement().addEventListener(`submit`, (evt) => {
         evt.preventDefault();
         const formData = new FormData(this._eventEdit.getElement());
-        for (let i of formData.keys()) {
-          console.log(i);
-        }
         this._changes.type = this._eventEdit.getElement().querySelector(`.event__type-icon`).dataset.eventType;
         this._changes.eventTime = +moment(formData.get(`event-start-time`), `YYYY-MM-DD HH:mm`);
         this._changes.timeDuration = moment(formData.get(`event-end-time`), `YYYY-MM-DD HH:mm`).valueOf() - moment(formData.get(`event-start-time`), `YYYY-MM-DD HH:mm`).valueOf();
