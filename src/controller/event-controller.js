@@ -22,6 +22,7 @@ export default class EventController {
 
   create() {
     this._event.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+
       const dateStart = flatpickr(this._eventEdit.getElement().querySelector(`#event-start-time-1`), {
         onChange: (selectedDate) => {
           dateEnd.set(`minDate`, selectedDate[0]);
