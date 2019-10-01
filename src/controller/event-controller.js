@@ -8,14 +8,14 @@ import 'flatpickr/dist/themes/light.css';
 import moment from 'moment';
 
 export default class EventController {
-  constructor(container, data, onDataChange) {
+  constructor(container, data, onDataChange, onChangeView) {
     this._container = container;
     this._data = data;
-    console.log(this._data);
     this._event = new Event(data);
     this._eventEdit = new EventEdit(data);
     this._dayEventsItem = new DayEventsItem();
     this._onDataChange = onDataChange;
+    this._onChangeView = onChangeView;
     this._changes = {};
     this.create();
   }
@@ -46,6 +46,7 @@ export default class EventController {
         time_24hr: true, // eslint-disable-line
         defaultDate: this._data.eventTime + this._data.timeDuration
       });
+      this._onChangeView();
       this._dayEventsItem.getElement().replaceChild(this._eventEdit.getElement(), this._event.getElement());
       this._eventEdit.getElement().querySelector(`.event__type-list`).addEventListener(`click`, (evt) => {
         if (evt.target.nodeName.toLowerCase() === `input`) {
@@ -84,7 +85,6 @@ export default class EventController {
           .map((item) => item.getAttribute(`src`));
         this._dayEventsItem.getElement().replaceChild(this._event.getElement(), this._eventEdit.getElement());
         this._eventEdit.removeElement();
-        console.log(this._changes);
         this._onDataChange(this._changes, this._data);
       });
       this._eventEdit.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, () => {
@@ -102,5 +102,11 @@ export default class EventController {
 
     render(this._container, this._dayEventsItem.getElement(), Position.BEFOREEND);
     render(this._dayEventsItem.getElement(), this._event.getElement(), Position.BEFOREEND);
+  }
+
+  setDefaultView() {
+    if (this._dayEventsItem.getElement().contains(this._eventEdit.getElement())) {
+      this._dayEventsItem.getElement().replaceChild(this._event.getElement(), this._eventEdit.getElement());
+    }
   }
 }

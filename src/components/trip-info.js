@@ -5,7 +5,9 @@ const countTotalPrice = function (elementList) {
     let optionPrice = 0;
     if (current.options.length !== 0) {
       current.options.forEach(function (element) {
-        optionPrice = optionPrice + element.price;
+        if (element.enable) {
+          optionPrice = optionPrice + element.price;
+        }
       });
     }
     return previous + current.cost + optionPrice;
