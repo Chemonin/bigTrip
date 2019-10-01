@@ -1,4 +1,5 @@
-import {month} from '../data.js';
+import moment from 'moment';
+
 export const countTotalPrice = function (elementList) {
   const initialValue = 0;
   return elementList.reduce(function (previous, current) {
@@ -24,14 +25,17 @@ export const createRootName = function (data) {
     return `${Array.from(cities)[0]}-...-${Array.from(cities).pop()}`;
   }
 };
+
+const createRootDate = function (data) {
+  return `${moment(data[0].eventTime)
+    .format(`MMM DD`)}&nbsp;&mdash;&nbsp;${moment(data[data.length - 1].eventTime).format(`MMM DD`)}`;
+};
 export const createTripInfo = (pointsData) => {
   return `<section class="trip-main__trip-info  trip-info">
     <div class="trip-info__main">
       <h1 class="trip-info__title">${createRootName(pointsData)}</h1>
 
-      <p class="trip-info__dates">${month[new Date(pointsData[0].eventTime)
-        .getMonth()].substr(0, 3)} ${new Date(pointsData[0].eventTime)
-        .getDate()}&nbsp;&mdash;&nbsp;${new Date(pointsData[pointsData.length - 1].eventTime).getDate()}</p>
+      <p class="trip-info__dates">${createRootDate(pointsData)}</p>
     </div>
 
     <p class="trip-info__cost">
