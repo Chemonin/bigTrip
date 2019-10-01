@@ -1,24 +1,33 @@
 import {month} from '../data.js';
-const countTotalPrice = function (elementList) {
+export const countTotalPrice = function (elementList) {
   const initialValue = 0;
   return elementList.reduce(function (previous, current) {
     let optionPrice = 0;
     if (current.options.length !== 0) {
       current.options.forEach(function (element) {
         if (element.enable) {
-          optionPrice = optionPrice + element.price;
+          optionPrice = optionPrice + parseInt(element.price, 10);
         }
       });
     }
-    return previous + current.cost + optionPrice;
+    return previous + parseInt(current.cost, 10) + optionPrice;
   }, initialValue);
+};
+
+export const createRootName = function (data) {
+  const cities = new Set(data.reduce((acc, curr) => {
+    return [...acc, curr.destination];
+  }, []));
+  if (cities.size <= 3) {
+    return Array.from(cities).map((element) => element).join(`-`);
+  } else {
+    return `${Array.from(cities)[0]}-...-${Array.from(cities).pop()}`;
+  }
 };
 export const createTripInfo = (pointsData) => {
   return `<section class="trip-main__trip-info  trip-info">
     <div class="trip-info__main">
-      <h1 class="trip-info__title">${pointsData.length <= 3 ?
-    `${pointsData.map((element) => element.destination).join(`-`)}` :
-    `${pointsData[0].destination}-...-${pointsData[pointsData.length - 1].destination}`}</h1>
+      <h1 class="trip-info__title">${createRootName(pointsData)}</h1>
 
       <p class="trip-info__dates">${month[new Date(pointsData[0].eventTime)
         .getMonth()].substr(0, 3)} ${new Date(pointsData[0].eventTime)

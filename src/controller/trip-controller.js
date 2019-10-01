@@ -5,6 +5,7 @@ import Day from '../components/day.js';
 import {Position, render, unrender} from '../utils.js';
 import Sorting from '../components/sorting.js';
 import EventController from './event-controller.js';
+import {countTotalPrice, createRootName} from '../components/trip-info.js';
 const CLEAR_DATE = ``;
 
 export default class TripController {
@@ -46,6 +47,8 @@ export default class TripController {
   }
   _onDataChange(newData, oldData) {
     this._points[this._points.findIndex((it) => it === oldData)] = newData;
+    document.querySelector(`.trip-info__cost-value`).textContent = countTotalPrice(this._points);
+    document.querySelector(`.trip-info__title`).textContent = createRootName(this._points);
     this._renderDay(this._points);
   }
 
