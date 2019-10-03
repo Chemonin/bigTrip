@@ -92,4 +92,12 @@ export default class TripController {
     this._sorting.getElement().addEventListener(`click`, (evt) => this._onSortingLabelClick(evt));
     this._renderDay(this._points);
   }
+
+  show() {
+    this._container.classList.remove(`visually-hidden`);
+  }
+
+  hide() {
+    this._container.classList.add(`visually-hidden`);
+  }
 }
