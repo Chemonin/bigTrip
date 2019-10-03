@@ -1,4 +1,5 @@
 import moment from 'moment';
+import AbstractComponent from './abstract-component.js';
 
 export const countTotalPrice = function (elementList) {
   const initialValue = 0;
@@ -30,16 +31,23 @@ const createRootDate = function (data) {
   return `${moment(data[0].eventTime)
     .format(`MMM DD`)}&nbsp;&mdash;&nbsp;${moment(data[data.length - 1].eventTime).format(`MMM DD`)}`;
 };
-export const createTripInfo = (pointsData) => {
-  return `<section class="trip-main__trip-info  trip-info">
-    <div class="trip-info__main">
-      <h1 class="trip-info__title">${createRootName(pointsData)}</h1>
 
-      <p class="trip-info__dates">${createRootDate(pointsData)}</p>
-    </div>
+export default class TripInfo extends AbstractComponent {
+  constructor(pointsData) {
+    super();
+    this._pointsData = pointsData;
+  }
+  getTemplate() {
+    return `<section class="trip-main__trip-info  trip-info">
+      <div class="trip-info__main">
+        <h1 class="trip-info__title">${createRootName(this._pointsData)}</h1>
 
-    <p class="trip-info__cost">
-      Total: &euro;&nbsp;<span class="trip-info__cost-value">${countTotalPrice(pointsData)}</span>
-    </p>
-  </section>`;
-};
+        <p class="trip-info__dates">${createRootDate(this._pointsData)}</p>
+      </div>
+
+      <p class="trip-info__cost">
+        Total: &euro;&nbsp;<span class="trip-info__cost-value">${countTotalPrice(this._pointsData)}</span>
+      </p>
+    </section>`;
+  }
+}
