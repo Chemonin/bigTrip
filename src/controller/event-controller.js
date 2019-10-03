@@ -22,7 +22,6 @@ export default class EventController {
 
   create() {
     this._event.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
-
       const dateStart = flatpickr(this._eventEdit.getElement().querySelector(`#event-start-time-1`), {
         onChange: (selectedDate) => {
           dateEnd.set(`minDate`, selectedDate[0]);
@@ -86,10 +85,7 @@ export default class EventController {
         this._onDataChange(this._changes, this._data);
       });
       this._eventEdit.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, () => {
-        unrender(this._eventEdit.getElement());
-        // pointsData.splice([pointsData.findIndex((it) => it === this._data)], 1); // для удаления данных точки из массива
-        this._eventEdit.removeElement();
-        this._event.removeElement();
+        this._onDataChange(null, this._data);
       });
 
       this._eventEdit.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {

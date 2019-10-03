@@ -47,7 +47,13 @@ export default class TripController {
     this._subscriptions.push(eventController.setDefaultView.bind(eventController));
   }
   _onDataChange(newData, oldData) {
-    this._points[this._points.findIndex((it) => it === oldData)] = newData;
+    const index = this._points.findIndex((it) => it === oldData);
+
+    if (newData === null) {
+      this._points.splice(index, 1);
+    } else {
+      this._points[index] = newData;
+    }
     document.querySelector(`.trip-info__cost-value`).textContent = countTotalPrice(this._points);
     document.querySelector(`.trip-info__title`).textContent = createRootName(this._points);
     document.querySelector(`.trip-info__dates`).textContent = `${moment(this._points[0].eventTime)
