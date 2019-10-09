@@ -1,3 +1,5 @@
+import DOMPurify from 'dompurify';
+
 export const Position = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`,
@@ -5,7 +7,7 @@ export const Position = {
 
 export const createElement = (template) => {
   const newElement = document.createElement(`div`);
-  newElement.innerHTML = template;
+  newElement.innerHTML = DOMPurify.sanitize(template);
   return newElement.firstChild;
 };
 
