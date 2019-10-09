@@ -6,6 +6,7 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/light.css';
 import moment from 'moment';
+const timeFormat = `time_24hr`;
 
 export default class EventController {
   constructor(container, data, onDataChange, onChangeView) {
@@ -31,7 +32,7 @@ export default class EventController {
         altFormat: `d.n.Y H:i`,
         allowInput: true,
         enableTime: true,
-        time_24hr: true, // eslint-disable-line
+        [timeFormat]: true,
         defaultDate: this._data.eventTime
       });
       const dateEnd = flatpickr(this._eventEdit.getElement().querySelector(`#event-end-time-1`), {
@@ -43,7 +44,7 @@ export default class EventController {
         altFormat: `d.n.Y H:i`,
         allowInput: true,
         enableTime: true,
-        time_24hr: true, // eslint-disable-line
+        [timeFormat]: true,
         defaultDate: this._data.eventTime + this._data.timeDuration
       });
       this._onChangeView();
