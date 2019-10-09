@@ -1,7 +1,7 @@
 import EventEdit from '../components/event-edit.js';
 import Event from '../components/event.js';
 import DayEventsItem from '../components/day-events-item.js';
-import {Position, render, unrender} from '../utils.js';
+import {Position, render} from '../utils.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/light.css';

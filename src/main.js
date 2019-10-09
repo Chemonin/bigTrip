@@ -1,7 +1,7 @@
 import Filter from './components/filter.js';
 import MainMenuControls from './components/main-menu-controls.js';
 import TripInfo from './components/trip-info.js';
-import {Position, render, unrender} from './utils.js';
+import {Position, render} from './utils.js';
 import {pointsData, filtersNames, controlsNames} from './data.js';
 import TripController from './controller/trip-controller.js';
 import Statistics from './components/statistics.js';
@@ -40,6 +40,15 @@ mainHeader.addEventListener(`click`, (evt) => {
       evt.target.classList.add(`trip-tabs__btn--active`);
       statistics.getElement().classList.remove(`visually-hidden`);
       tripController.hide();
+      break;
+    case `New event`:
+      evt.currentTarget.querySelectorAll(`a`).forEach((element) => {
+        if (element.textContent === `Table`) {
+          element.classList.add(`trip-tabs__btn--active`);
+        }
+      });
+      statistics.getElement().classList.add(`visually-hidden`);
+      tripController.show();
       break;
   }
 });
